@@ -12,7 +12,7 @@ public abstract class Enemy : MonoBehaviour
 
     [SerializeField] private int level;
 
-    [SerializeField] private int attackDistance;
+    [SerializeField] private float attackDistance;
         
     [SerializeField] private Animator anim;
 
@@ -31,23 +31,26 @@ public abstract class Enemy : MonoBehaviour
         //anim.SetBool("attack", true);
     }
     
-    protected virtual void GetDamage(int amount)
+    protected void IncreaseHealth(int amount)
     {
-        health -= amount;
+        if (health > 0)
+        {
+            health -= amount;
+        }
 
-        if (health <= 0)
+        else
         {
             Death();
         }
     }
 
-    protected virtual void Death()
+    protected void Death()
     {
         Debug.Log(gameObject.name + " Death");
         //anim.SetBool("death", true);
     }
 
-    protected virtual void Move()
+    protected void Move()
     {
         float dist = Vector3.Distance(_playerBase.transform.position, transform.position);
 
@@ -69,6 +72,6 @@ public abstract class Enemy : MonoBehaviour
 
     protected virtual void Update()
     {
-        
+        Move();
     }
 }

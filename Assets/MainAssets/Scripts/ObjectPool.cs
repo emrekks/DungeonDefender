@@ -16,11 +16,11 @@ public class ObjectPool : MonoBehaviour
 
     [SerializeField] private Pool[] pools = null;
 
-    public static ObjectPool Instantiate;
+    public static ObjectPool Instance;
     
     private void Awake()
     {
-        Instantiate = this;
+        Instance = this;
         
         for (int j = 0; j < pools.Length; j++)
         {
@@ -28,7 +28,8 @@ public class ObjectPool : MonoBehaviour
 
             for (int i = 0; i <  pools[j].poolSize; i++)
             {
-                GameObject obj = Instantiate( pools[j].objectPrefab);
+                GameObject obj = Instantiate(pools[j].objectPrefab);
+                
                 obj.SetActive(false);
             
                 pools[j].pooledObjects.Enqueue(obj);
@@ -36,7 +37,7 @@ public class ObjectPool : MonoBehaviour
         }
     }
 
-    public GameObject GetPooledObject(int objectType)
+    public GameObject GetPooledObject(int objectType, Transform transform, Vector3 rotation)
     {
         if (objectType >= pools.Length)
         {
@@ -44,7 +45,15 @@ public class ObjectPool : MonoBehaviour
         }
         
         GameObject obj =  pools[objectType].pooledObjects.Dequeue();
+
+        obj.transform.SetParent(transform);
+
+        obj.transform.position = transform.position;
+
+        obj.transform.eulerAngles = rotation;
         
+        obj.transform.SetParent(null);
+
         obj.SetActive(true);
 
         return obj;

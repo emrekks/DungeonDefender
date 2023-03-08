@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class EnemySpawner : MonoBehaviour
 {
-    public Transform[] transform;
+    public Transform[] spawnerTransforms;
 
     private int i;
 
@@ -13,9 +13,7 @@ public class EnemySpawner : MonoBehaviour
         {
             if (i < 6)
             {
-                var enemyType1 = ObjectPool.Instantiate.GetPooledObject(0);
-
-                enemyType1.transform.position = transform[i].position;
+                var enemyType1 = ObjectPool.Instance.GetPooledObject(0, spawnerTransforms[i], Vector3.zero);
             }
 
             else
