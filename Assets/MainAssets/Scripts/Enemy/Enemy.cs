@@ -1,14 +1,16 @@
+using System.Diagnostics;
 using UnityEngine;
+using Debug = UnityEngine.Debug;
 
 public abstract class Enemy : MonoBehaviour
 {
-    [SerializeField]public int health;
+    [SerializeField] public int health;
 
-    [SerializeField]private int damage;
+    [SerializeField] private int damage;
 
-    [SerializeField]private float speed;
+    [SerializeField] private float speed;
 
-    [SerializeField]private int giveCoin;
+    [SerializeField] private int giveCoin;
 
     [SerializeField] private int level;
 
@@ -18,19 +20,19 @@ public abstract class Enemy : MonoBehaviour
 
     private bool _canAttack;
 
-    private GameObject _playerBase;
+    protected Base _playerBase;
 
     
     private void Awake()
     {
-        _playerBase = GameObject.FindWithTag("PlayerBase");
+        _playerBase = FindObjectOfType<Base>();
     }
 
     protected virtual void Attack()
     {
         //anim.SetBool("attack", true);
     }
-    
+
     protected void IncreaseHealth(int amount)
     {
         if (health > 0)
@@ -47,12 +49,13 @@ public abstract class Enemy : MonoBehaviour
     protected void Death()
     {
         Debug.Log(gameObject.name + " Death");
+        
         //anim.SetBool("death", true);
     }
 
     protected void Move()
     {
-        float dist = Vector3.Distance(_playerBase.transform.position, transform.position);
+        float dist = Mathf.Abs(_playerBase.transform.position.x - transform.position.x);
 
         if(dist > attackDistance)
         {
@@ -65,7 +68,7 @@ public abstract class Enemy : MonoBehaviour
             {
                 Attack();
                 
-                _canAttack = true;
+                //_canAttack = true;
             }
         }
     }
