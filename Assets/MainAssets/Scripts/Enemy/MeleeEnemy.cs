@@ -4,7 +4,7 @@ using UnityEngine;
 public class MeleeEnemy : Enemy, IDamageable
 {
     public TextMeshPro healthText;
-    
+
     protected override void Attack()
     {
         Debug.Log("MeleeChampAttacking");

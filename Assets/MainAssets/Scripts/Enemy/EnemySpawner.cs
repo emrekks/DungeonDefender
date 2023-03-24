@@ -1,27 +1,43 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 
 public class EnemySpawner : MonoBehaviour
 {
-    public Transform[] spawnerTransforms;
+    public Transform spawnerTransforms;
 
-    private int i;
+    public List<EnemyWaveController> enemies = new List<EnemyWaveController>();
+
+    public float waveDelay;
+
+    private float _timer;
+
+    private void Awake()
+    {
+        _timer = waveDelay;
+    }
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.A))
+        _timer -= Time.deltaTime;
+        
+        if (_timer <= 0)
         {
-            if (i < 6)
+            if (enemies.Count > 0)
             {
-                var enemyType1 = ObjectPool.Instance.GetPooledObject(0, spawnerTransforms[i], Vector3.zero);
+                ObjectPool.Instance.GetPooledObject(enemies[0].enemyType, transform, transform.eulerAngles);
+
+                enemies.RemoveAt(0);
+
+                _timer = waveDelay;
             }
 
             else
             {
-                i = 0;
+                Debug.Log("Wave finished");
             }
-        
-            i++;
         }
     }
 }

@@ -1,6 +1,5 @@
-using System.Diagnostics;
+using System.Collections;
 using UnityEngine;
-using Debug = UnityEngine.Debug;
 
 public abstract class Enemy : MonoBehaviour
 {
@@ -48,9 +47,14 @@ public abstract class Enemy : MonoBehaviour
 
     protected void Death()
     {
-        Debug.Log(gameObject.name + " Death");
-        
         //anim.SetBool("death", true);
+        StartCoroutine(DeathEnum());
+    }
+
+    private IEnumerator DeathEnum()
+    {
+        yield return new WaitForSeconds(1f);
+        gameObject.SetActive(false);
     }
 
     protected void Move()
